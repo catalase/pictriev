@@ -21,7 +21,7 @@ type FindFaceResult struct {
 	ImageID string `json:"imageid"`
 	// NFaces value is not 0 unless a faces cannot be found.
 	NFaces int     `json:"nfaces"`
-	PTime  float64 `json:"ptime"`
+	PTime time.Duration
 	Width  int     `json:"sx"`
 	Height int     `json:"sy"`
 }
@@ -75,11 +75,15 @@ func parseFindFaceResult(resp *http.Response) (*FindFaceResult, error) {
 	data := new(struct {
 		FindFaceResult
 		Fault
+		RawPTime  float64 `json:"ptime"`
 	})
 	dec := json.NewDecoder(resp.Body)
 	if err := dec.Decode(data); err != nil {
 		return nil, err
 	}
+
+	data.PTime = time.Duration(float64(time.Second) * data.RawPTime)
+	
 	if data.Result != "OK" {
 		data.Result = "FindFace"
 		return nil, &data.Fault
