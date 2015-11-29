@@ -10,6 +10,7 @@ import (
 	"net/textproto"
 	"net/url"
 	"strconv"
+	"time"
 )
 
 func dictate(command string, v url.Values) (*http.Response, error) {
@@ -83,7 +84,7 @@ func parseFindFaceResult(resp *http.Response) (*FindFaceResult, error) {
 	}
 
 	data.PTime = time.Duration(float64(time.Second) * data.RawPTime)
-	
+
 	if data.Result != "OK" {
 		data.Result = "FindFace"
 		return nil, &data.Fault
