@@ -48,7 +48,7 @@ type WhoisResult struct {
 	// Attrs 는 높은 확률 순서로 정렬되어 있다.
 	Attrs  []Attr
 	Gender Gender
-	Lang   string
+	Lang   Lang
 }
 
 type Fault struct {
